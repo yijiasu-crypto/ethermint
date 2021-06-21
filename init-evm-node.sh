@@ -1,7 +1,7 @@
 #!/bin/bash
 
 KEY="mykey"
-CHAINID="ethermint-99"
+CHAINID="ethermint-1337"
 MONIKER="localtestnet"
 MNEMONIC="yard similar hotel exercise calm cousin forget wisdom swallow fatal afraid what dog panther nose age ramp portion floor scene cruise soul strong rose"
 
