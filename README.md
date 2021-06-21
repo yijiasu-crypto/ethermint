@@ -77,6 +77,23 @@ make test-import
 You may also provide a custom blockchain export file to test importing more blocks
 via the `--blockchain` flag. See `TestImportBlocks` for further documentation.
 
+## Running a localhost node with EVM support
+
+```bash
+./init-evm-node.sh
+```
+
+With this terminal window open, please go ahead to run you `truffle` scripts or connect MetaMask to `localhost:8545`.
+
+If you need WebSocket support, use `localhost:8546` instead.
+
+
+Notes:
+
+1. Logs from `ethermintd` are stored at `./ethermintd.log`
+2. If you need to change the `MNEMONIC`, update trailing lines of `./init-evm-node.sh`. The default 24-mnemonic words are: `yard similar hotel exercise calm cousin forget wisdom swallow fatal afraid what dog panther nose age ramp portion floor scene cruise soul strong rose`
+
+
 ### Community
 
 The following chat channels and forums are a great spot to ask questions about Ethermint:
