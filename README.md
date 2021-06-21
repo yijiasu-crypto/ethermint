@@ -92,6 +92,7 @@ Notes:
 
 1. Logs from `ethermintd` are stored at `./ethermintd.log`
 2. If you need to change the `MNEMONIC`, update trailing lines of `./init-evm-node.sh`. The default 24-mnemonic words are: `yard similar hotel exercise calm cousin forget wisdom swallow fatal afraid what dog panther nose age ramp portion floor scene cruise soul strong rose`
+3. The default private key is `0x49a2c89120ffdf59157e6a29b7bb3210899915adc9ae758bf1a22b0f33000d05` with an address on `0x90FdB51c13Ce085cE7F9c0dA8683B7327711b064`. If you need to interact with MetaMask, use this account (it's with balance by default)
 
 
 ### Community
