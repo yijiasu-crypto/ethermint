@@ -9,6 +9,9 @@ rm -rf ~/.ethermintd*
 
 make install
 
+ethermintd config keyring-backend test
+ethermintd config chain-id $CHAINID
+
 # if $KEY exists it should be deleted
 echo $MNEMONIC | ethermintd keys add $KEY --keyring-backend test --algo "eth_secp256k1" --recover
 
@@ -72,4 +75,4 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
-ethermintd start --pruning=nothing --keyring-backend test --trace --log_level info
+ethermintd start --pruning=nothing --trace --log_level info --minimum-gas-prices=0.0001aphoton
