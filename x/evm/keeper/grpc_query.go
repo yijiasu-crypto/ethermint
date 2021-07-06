@@ -36,7 +36,7 @@ func (k Keeper) Account(c context.Context, req *types.QueryAccountRequest) (*typ
 	k.WithContext(ctx)
 
 	return &types.QueryAccountResponse{
-		Balance:  k.GetBalance(addr).Int64(),
+		Balance:  k.GetBalance(addr).String(),
 		CodeHash: k.GetCodeHash(addr).Hex(),
 		Nonce:    k.GetNonce(addr),
 	}, nil
@@ -127,7 +127,7 @@ func (k Keeper) Balance(c context.Context, req *types.QueryBalanceRequest) (*typ
 	balanceInt := k.GetBalance(ethcmn.HexToAddress(req.Address))
 
 	return &types.QueryBalanceResponse{
-		Balance: balanceInt.Int64(),
+		Balance: balanceInt.String(),
 	}, nil
 }
 
@@ -314,7 +314,7 @@ func (k Keeper) StaticCall(c context.Context, req *types.QueryStaticCallRequest)
 	// so := k.GetOrNewStateObject(*recipient)
 	// sender := ethcmn.HexToAddress("0xaDd00275E3d9d213654Ce5223f0FADE8b106b707")
 
-	// msg := types.NewMsgEthereumTx(
+	// msg := types.NewTx(
 	// 	chainIDEpoch, so.Nonce(), recipient, big.NewInt(0), 100000000, big.NewInt(0), req.Input, nil,
 	// )
 	// msg.From = sender.Hex()

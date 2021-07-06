@@ -2,6 +2,7 @@ package backend
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 	"regexp"
 
@@ -49,15 +50,21 @@ type EVMBackend struct {
 	clientCtx   client.Context
 	queryClient *types.QueryClient // gRPC query client
 	logger      log.Logger
+	chainID     *big.Int
 }
 
 // NewEVMBackend creates a new EVMBackend instance
 func NewEVMBackend(clientCtx client.Context) *EVMBackend {
+	chainID, err := ethermint.ParseChainID(clientCtx.ChainID)
+	if err != nil {
+		panic(err)
+	}
 	return &EVMBackend{
 		ctx:         context.Background(),
 		clientCtx:   clientCtx,
 		queryClient: types.NewQueryClient(clientCtx),
 		logger:      log.WithField("module", "evm-backend"),
+		chainID:     chainID,
 	}
 }
 
@@ -150,25 +157,39 @@ func (e *EVMBackend) EthBlockFromTendermint(
 		}
 
 		hash := msg.AsTransaction().Hash()
-		if fullTx {
-			ethTx, err := types.NewTransactionFromData(
-				msg.Data,
-				common.HexToAddress(msg.From),
-				hash,
-				common.BytesToHash(block.Hash()),
-				uint64(block.Height),
-				uint64(i),
-			)
-
-			ethRPCTxs = append(ethRPCTxs, ethTx)
-
-			if err != nil {
-				e.logger.WithError(err).Debugln("NewTransactionFromData for receipt failed", "hash", hash.Hex)
-				continue
-			}
-		} else {
+		if !fullTx {
 			ethRPCTxs = append(ethRPCTxs, hash)
+			continue
 		}
+
+		// get full transaction from message data
+
+		from, err := msg.GetSender(e.chainID)
+		if err != nil {
+			from = common.HexToAddress(msg.From)
+		}
+
+		txData, err := evmtypes.UnpackTxData(msg.Data)
+		if err != nil {
+			e.logger.WithError(err).Debugln("decoding failed")
+			return nil, fmt.Errorf("failed to unpack tx data: %w", err)
+		}
+
+		ethTx, err := types.NewTransactionFromData(
+			txData,
+			from,
+			hash,
+			common.BytesToHash(block.Hash()),
+			uint64(block.Height),
+			uint64(i),
+		)
+
+		if err != nil {
+			e.logger.WithError(err).Debugln("NewTransactionFromData for receipt failed", "hash", hash.Hex)
+			continue
+		}
+
+		ethRPCTxs = append(ethRPCTxs, ethTx)
 	}
 
 	blockBloomResp, err := queryClient.BlockBloom(types.ContextWithHeight(block.Height), &evmtypes.QueryBlockBloomRequest{})

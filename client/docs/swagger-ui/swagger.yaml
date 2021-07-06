@@ -16,7 +16,6 @@ paths:
             properties:
               balance:
                 type: string
-                format: int64
                 description: balance is the balance of the EVM denomination.
               code_hash:
                 type: string
@@ -72,7 +71,6 @@ paths:
             properties:
               balance:
                 type: string
-                format: int64
                 description: balance is the balance of the EVM denomination.
             description: >-
               QueryBalanceResponse is the response type for the Query/Balance
@@ -10579,7 +10577,6 @@ definitions:
     properties:
       balance:
         type: string
-        format: int64
         description: balance is the balance of the EVM denomination.
       code_hash:
         type: string
@@ -10596,7 +10593,6 @@ definitions:
     properties:
       balance:
         type: string
-        format: int64
         description: balance is the balance of the EVM denomination.
     description: >-
       QueryBalanceResponse is the response type for the Query/Balance RPC

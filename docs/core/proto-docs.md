@@ -15,7 +15,6 @@
     - [Params](#ethermint.evm.v1alpha1.Params)
     - [State](#ethermint.evm.v1alpha1.State)
     - [TransactionLogs](#ethermint.evm.v1alpha1.TransactionLogs)
-    - [TxData](#ethermint.evm.v1alpha1.TxData)
     - [TxResult](#ethermint.evm.v1alpha1.TxResult)
   
 - [ethermint/evm/v1alpha1/genesis.proto](#ethermint/evm/v1alpha1/genesis.proto)
@@ -49,8 +48,10 @@
     - [Query](#ethermint.evm.v1alpha1.Query)
   
 - [ethermint/evm/v1alpha1/tx.proto](#ethermint/evm/v1alpha1/tx.proto)
+    - [AccessListTx](#ethermint.evm.v1alpha1.AccessListTx)
     - [ExtensionOptionsEthereumTx](#ethermint.evm.v1alpha1.ExtensionOptionsEthereumTx)
     - [ExtensionOptionsWeb3Tx](#ethermint.evm.v1alpha1.ExtensionOptionsWeb3Tx)
+    - [LegacyTx](#ethermint.evm.v1alpha1.LegacyTx)
     - [MsgEthereumTx](#ethermint.evm.v1alpha1.MsgEthereumTx)
     - [MsgEthereumTxResponse](#ethermint.evm.v1alpha1.MsgEthereumTxResponse)
   
@@ -252,32 +253,6 @@ persisted on blockchain state after an upgrade.
 
 
 
-<a name="ethermint.evm.v1alpha1.TxData"></a>
-
-### TxData
-TxData implements the Ethereum transaction data structure. It is used
-solely as intended in Ethereum abiding by the protocol.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| `chain_id` | [string](#string) |  | destination EVM chain ID |
-| `nonce` | [uint64](#uint64) |  | nonce corresponds to the account nonce (transaction sequence). |
-| `gas_price` | [string](#string) |  | gas price defines the value for each gas unit |
-| `gas` | [uint64](#uint64) |  | gas defines the gas limit defined for the transaction. |
-| `to` | [string](#string) |  | hex formatted address of the recipient |
-| `value` | [string](#string) |  | value defines the unsigned integer value of the transaction amount. |
-| `input` | [bytes](#bytes) |  | input defines the data payload bytes of the transaction. |
-| `accesses` | [AccessTuple](#ethermint.evm.v1alpha1.AccessTuple) | repeated |  |
-| `v` | [bytes](#bytes) |  | v defines the signature value |
-| `r` | [bytes](#bytes) |  | r defines the signature value |
-| `s` | [bytes](#bytes) |  | s define the signature value |
-
-
-
-
-
-
 <a name="ethermint.evm.v1alpha1.TxResult"></a>
 
 ### TxResult
@@ -390,7 +365,7 @@ QueryAccountResponse is the response type for the Query/Account RPC method.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `balance` | [int64](#int64) |  | balance is the balance of the EVM denomination. |
+| `balance` | [string](#string) |  | balance is the balance of the EVM denomination. |
 | `code_hash` | [string](#string) |  | code hash is the hex-formatted code bytes from the EOA. |
 | `nonce` | [uint64](#uint64) |  | nonce is the account's sequence number. |
 
@@ -422,7 +397,7 @@ QueryBalanceResponse is the response type for the Query/Balance RPC method.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `balance` | [int64](#int64) |  | balance is the balance of the EVM denomination. |
+| `balance` | [string](#string) |  | balance is the balance of the EVM denomination. |
 
 
 
@@ -737,6 +712,31 @@ Query defines the gRPC querier service.
 
 
 
+<a name="ethermint.evm.v1alpha1.AccessListTx"></a>
+
+### AccessListTx
+AccessListTx is the data of EIP-2930 access list transactions.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `chain_id` | [string](#string) |  | destination EVM chain ID |
+| `nonce` | [uint64](#uint64) |  | nonce corresponds to the account nonce (transaction sequence). |
+| `gas_price` | [string](#string) |  | gas price defines the value for each gas unit |
+| `gas` | [uint64](#uint64) |  | gas defines the gas limit defined for the transaction. |
+| `to` | [string](#string) |  | hex formatted address of the recipient |
+| `value` | [string](#string) |  | value defines the unsigned integer value of the transaction amount. |
+| `data` | [bytes](#bytes) |  | input defines the data payload bytes of the transaction. |
+| `accesses` | [AccessTuple](#ethermint.evm.v1alpha1.AccessTuple) | repeated |  |
+| `v` | [bytes](#bytes) |  | v defines the signature value |
+| `r` | [bytes](#bytes) |  | r defines the signature value |
+| `s` | [bytes](#bytes) |  | s define the signature value |
+
+
+
+
+
+
 <a name="ethermint.evm.v1alpha1.ExtensionOptionsEthereumTx"></a>
 
 ### ExtensionOptionsEthereumTx
@@ -757,6 +757,29 @@ Query defines the gRPC querier service.
 
 
 
+<a name="ethermint.evm.v1alpha1.LegacyTx"></a>
+
+### LegacyTx
+LegacyTx is the transaction data of regular Ethereum transactions.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `nonce` | [uint64](#uint64) |  | nonce corresponds to the account nonce (transaction sequence). |
+| `gas_price` | [string](#string) |  | gas price defines the value for each gas unit |
+| `gas` | [uint64](#uint64) |  | gas defines the gas limit defined for the transaction. |
+| `to` | [string](#string) |  | hex formatted address of the recipient |
+| `value` | [string](#string) |  | value defines the unsigned integer value of the transaction amount. |
+| `data` | [bytes](#bytes) |  | input defines the data payload bytes of the transaction. |
+| `v` | [bytes](#bytes) |  | v defines the signature value |
+| `r` | [bytes](#bytes) |  | r defines the signature value |
+| `s` | [bytes](#bytes) |  | s define the signature value |
+
+
+
+
+
+
 <a name="ethermint.evm.v1alpha1.MsgEthereumTx"></a>
 
 ### MsgEthereumTx
@@ -765,7 +788,7 @@ MsgEthereumTx encapsulates an Ethereum transaction as an SDK message.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| `data` | [TxData](#ethermint.evm.v1alpha1.TxData) |  | inner transaction data
+| `data` | [google.protobuf.Any](#google.protobuf.Any) |  | inner transaction data
 
 caches |
 | `size` | [double](#double) |  | encoded storage size of the transaction |
