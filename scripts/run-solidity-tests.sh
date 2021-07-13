@@ -17,4 +17,4 @@ else
     yarn install
 fi
 
-yarn test --network ethermint
+yarn test --network ethermint initializable
