@@ -1,4 +1,6 @@
 #!/bin/bash
+export GOPATH=~/go
+export PATH=$PATH:$GOPATH/bin
 
 # remove existing daemon and client
 rm -rf ~/.ethermintd*
@@ -17,4 +19,4 @@ else
     yarn install
 fi
 
-yarn test --network ethermint initializable
+yarn test --network ethermint --verbose-log initializable
