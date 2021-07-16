@@ -62,11 +62,6 @@ service Query {
     option (google.api.http).get = "/ethermint/evm/v1alpha1/params";
   }
 
-  // ChainConfig queries the chain configuration values of EVM.
-  rpc ChainConfig(QueryChainConfigRequest) returns (QueryChainConfigResponse) {
-    option (google.api.http).get = "/ethermint/evm/v1alpha1/chain_config";
-  }
-
   // StaticCall queries the static call value of x/evm module.
   rpc StaticCall(QueryStaticCallRequest) returns (QueryStaticCallResponse) {
     option (google.api.http).get = "/ethermint/evm/v1alpha1/static_call";
@@ -76,6 +71,7 @@ service Query {
   rpc EthCall(EthCallRequest) returns (MsgEthereumTxResponse) {
     option (google.api.http).get = "/ethermint/evm/v1alpha1/eth_call";
   }
+
 }
 
 // QueryAccountRequest is the request type for the Query/Account RPC method.
@@ -239,15 +235,6 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-// QueryChainConfigRequest defines the request type for querying x/evm chain configuration.
-message QueryChainConfigRequest {}
-
-// QueryChainConfigResponse defines the response type for querying x/evm chain configuration.
-message QueryChainConfigResponse {
-  // ChainConfig define the evm chain configuration.
-  ChainConfig config = 1 [(gogoproto.nullable) = false];
-}
-
 // QueryStaticCallRequest defines static call request
 message QueryStaticCallRequest {
   // address is the ethereum contract hex address to for static call.
@@ -265,4 +252,6 @@ message QueryStaticCallResponse {
 message EthCallRequest {
   // same json format as the json rpc api.
   bytes args = 1;
+  // the default gas cap to be used
+  uint64 gas_cap = 2;
 }
